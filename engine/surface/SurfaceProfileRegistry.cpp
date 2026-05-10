@@ -12,7 +12,16 @@ bool SurfaceProfileRegistry::registerProfile(const SurfaceProfile& profile) {
         return false;
     }
 
-    profiles_[profile.id] = profile;
+    const std::vector<SurfaceValidationError> validationErrors = validateSurfaceProfile(profile);
+    if (!validationErrors.empty()) {
+        return false;
+    }
+
+    const auto [_, inserted] = profiles_.emplace(profile.id, profile);
+    if (!inserted) {
+        return false;
+    }
+
     return true;
 }
 
@@ -27,33 +36,20 @@ bool SurfaceProfileRegistry::loadProfiles(const std::vector<SurfaceProfile>& pro
 bool SurfaceProfileRegistry::loadFromDirectory(const std::string& directoryPath) {
     bool allLoaded = true;
 
+    if (!std::filesystem::exists(directoryPath)) {
+        return false;
+    }
+
     for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
-        if (!entry.is_regular_file() || entry.path().extension() != ".json" || entry.path().stem().extension() != ".surface") {
+        if (!entry.is_regular_file() || entry.path().extension() != ".json" ||
+            entry.path().stem().extension() != ".surface") {
             continue;
         }
 
-        const std::string filePath = entry.path().string();
-
-        const SurfaceParseResult parsed = parseSurfaceProfileAuthoringFile(filePath);
-        if (!parsed.ok) {
+        const SurfaceParseResult parsed = parseSurfaceProfileAuthoringFile(entry.path().string());
+        if (!parsed.ok || parsed.profile.category == SurfaceCategory::Unknown || !registerProfile(parsed.profile)) {
             allLoaded = false;
             continue;
-        }
-
-        if (parsed.profile.category == SurfaceCategory::Unknown) {
-            allLoaded = false;
-            continue;
-        }
-
-        const std::vector<SurfaceValidationError> validationErrors =
-            validateSurfaceProfile(parsed.profile);
-        if (!validationErrors.empty()) {
-            allLoaded = false;
-            continue;
-        }
-
-        if (!registerProfile(parsed.profile)) {
-            allLoaded = false;
         }
     }
 

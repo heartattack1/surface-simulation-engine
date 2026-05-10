@@ -23,5 +23,6 @@
     "accelerationMultiplier": 0.67,
     "brakingMultiplier": 0.79,
     "lateralControlMultiplier": 0.63
-  }
+  },
+  "name": "Mud Wet Soil"
 }
