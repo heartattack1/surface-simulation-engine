@@ -23,5 +23,6 @@
     "accelerationMultiplier": 1.0,
     "brakingMultiplier": 1.05,
     "lateralControlMultiplier": 1.02
-  }
+  },
+  "name": "Concrete Dry"
 }
