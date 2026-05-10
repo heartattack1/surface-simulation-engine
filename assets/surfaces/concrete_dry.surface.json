@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": 1001,
+  "category": "Hard",
+  "physical": {
+    "friction": 0.72,
+    "staticFriction": 0.82,
+    "restitution": 0.12,
+    "roughness": 0.68
+  },
+  "environmental": {
+    "thermalConductivity": 0.78,
+    "heatCapacity": 0.62,
+    "absorbency": 0.12
+  },
+  "deformation": {
+    "softness": 0.05,
+    "maxCompression": 0.02,
+    "recoveryRate": 0.96
+  },
+  "movement": {
+    "speedMultiplier": 1.0,
+    "accelerationMultiplier": 1.0,
+    "brakingMultiplier": 1.05,
+    "lateralControlMultiplier": 1.02
+  }
+}

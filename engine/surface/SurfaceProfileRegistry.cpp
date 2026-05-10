@@ -1,5 +1,10 @@
 #include "SurfaceProfileRegistry.h"
 
+#include <filesystem>
+
+#include "SurfaceSerialization.h"
+#include "SurfaceValidation.h"
+
 namespace surface {
 
 bool SurfaceProfileRegistry::registerProfile(const SurfaceProfile& profile) {
@@ -16,6 +21,42 @@ bool SurfaceProfileRegistry::loadProfiles(const std::vector<SurfaceProfile>& pro
     for (const SurfaceProfile& profile : profiles) {
         allLoaded = registerProfile(profile) && allLoaded;
     }
+    return allLoaded;
+}
+
+bool SurfaceProfileRegistry::loadFromDirectory(const std::string& directoryPath) {
+    bool allLoaded = true;
+
+    for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
+        if (!entry.is_regular_file() || entry.path().extension() != ".json" || entry.path().stem().extension() != ".surface") {
+            continue;
+        }
+
+        const std::string filePath = entry.path().string();
+
+        const SurfaceParseResult parsed = parseSurfaceProfileAuthoringFile(filePath);
+        if (!parsed.ok) {
+            allLoaded = false;
+            continue;
+        }
+
+        if (parsed.profile.category == SurfaceCategory::Unknown) {
+            allLoaded = false;
+            continue;
+        }
+
+        const std::vector<SurfaceValidationError> validationErrors =
+            validateSurfaceProfile(parsed.profile);
+        if (!validationErrors.empty()) {
+            allLoaded = false;
+            continue;
+        }
+
+        if (!registerProfile(parsed.profile)) {
+            allLoaded = false;
+        }
+    }
+
     return allLoaded;
 }
 
