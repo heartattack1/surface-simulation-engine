@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": 1002,
+  "category": "Organic",
+  "physical": {
+    "friction": 0.38,
+    "staticFriction": 0.44,
+    "restitution": 0.03,
+    "roughness": 0.87
+  },
+  "environmental": {
+    "thermalConductivity": 0.43,
+    "heatCapacity": 0.74,
+    "absorbency": 0.95
+  },
+  "deformation": {
+    "softness": 0.78,
+    "maxCompression": 0.31,
+    "recoveryRate": 0.52
+  },
+  "movement": {
+    "speedMultiplier": 0.72,
+    "accelerationMultiplier": 0.67,
+    "brakingMultiplier": 0.79,
+    "lateralControlMultiplier": 0.63
+  }
+}
