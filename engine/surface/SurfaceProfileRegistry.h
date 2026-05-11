@@ -22,7 +22,7 @@ public:
     void clear();
 
 private:
-    std::unordered_map<SurfaceId, SurfaceProfile> profiles_;
+    std::unordered_map<SurfaceId, SurfaceProfile, std::hash<SurfaceId>> profiles_;
 };
 
 }  // namespace surface

@@ -1,10 +1,19 @@
 #include <cassert>
+#include <type_traits>
+#include <unordered_map>
 
 #include "SurfaceEvaluator.h"
 
 using namespace surface;
 
 int main() {
+    static_assert(std::is_invocable_r_v<std::size_t, std::hash<SurfaceId>, const SurfaceId&>);
+
+    std::unordered_map<SurfaceId, int, std::hash<SurfaceId>> surfaceMap;
+    surfaceMap.emplace(SurfaceId{42}, 7);
+    assert(surfaceMap.find(SurfaceId{42}) != surfaceMap.end());
+    assert(surfaceMap.at(SurfaceId{42}) == 7);
+
     SurfaceProfile profile{};
     profile.id = SurfaceId{1};
     profile.physical.baseStaticFriction = 0.9F;
