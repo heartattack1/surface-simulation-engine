@@ -9,9 +9,9 @@ namespace surface {
 
 class SurfaceEvaluator {
 public:
-    static SurfaceResponse evaluate(const SurfaceProfile& profile,
-                                    const SurfaceState& state,
-                                    const SurfaceContact& contact);
+    SurfaceResponse evaluate(const SurfaceProfile& profile,
+                             const SurfaceState& state,
+                             const SurfaceContact& contact) const;
 };
 
 }  // namespace surface
