@@ -1,6 +1,7 @@
 #include "SurfaceProfileRegistry.h"
 
 #include <filesystem>
+#include <iostream>
 
 #include "SurfaceSerialization.h"
 #include "SurfaceValidation.h"
@@ -13,7 +14,16 @@ bool SurfaceProfileRegistry::registerProfile(const SurfaceProfile& profile) {
     }
 
     const std::vector<SurfaceValidationError> validationErrors = validateSurfaceProfile(profile);
-    if (!validationErrors.empty()) {
+    bool hasHardError = false;
+    for (const SurfaceValidationError& issue : validationErrors) {
+        std::cerr << "[SurfaceValidation] id=" << profile.id.value << " field=" << issue.field
+                  << " severity=" << (issue.severity == SurfaceValidationSeverity::Error ? "error" : "warning")
+                  << " message=" << issue.message << "\n";
+        if (issue.severity == SurfaceValidationSeverity::Error) {
+            hasHardError = true;
+        }
+    }
+    if (hasHardError) {
         return false;
     }
 

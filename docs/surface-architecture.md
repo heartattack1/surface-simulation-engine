@@ -109,6 +109,21 @@ All major runtime consumers integrate through a common evaluation API:
 4. Produce a normalized Response payload.
 5. Return deterministic results for equal inputs within the same frame state.
 
+### Deterministic / normalized response safeguards
+
+To preserve determinism and normalized output ranges, profile/state validation is split into two classes:
+
+- **hard-error**: registration is rejected; profile cannot enter runtime registry.
+- **warning**: registration is allowed, but the issue is logged for tuning follow-up.
+
+Baseline normalization rules:
+
+- Coefficients that feed direct response math (friction/grip/hardness/restitution and environmental slip/softening factors) must stay in documented ranges, typically `[0..1]` (movement/feedback multipliers may use broader documented ranges).
+- Curve samples (`Curve.samples`) must stay within normalized `[0..1]` unless an explicitly documented alternative range is introduced.
+- Runtime state layers/modulators (`water/snow/ice/dust/oil`, `deformation`, `damage`) are normalized to `[0..1]` and validated accordingly.
+
+This keeps equal input tuples (`profile`, `state`, `contact`) producing stable, bounded outputs across systems.
+
 ### Consumer responsibilities
 
 - **CharacterController**: consume movement/control response values only.
