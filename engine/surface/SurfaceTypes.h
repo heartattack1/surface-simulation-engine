@@ -1,17 +1,38 @@
 #pragma once
 
+#include <algorithm>
+#include <array>
 #include <cstdint>
-#include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace surface {
 
-using SurfaceId = std::uint32_t;
+struct SurfaceId {
+    std::uint32_t value = 0;
 
-constexpr SurfaceId kInvalidSurfaceId = 0;
+    constexpr bool operator==(const SurfaceId&) const = default;
+};
 
-enum class SurfaceCategory {
+inline constexpr SurfaceId kInvalidSurfaceId{};
+
+constexpr float clamp01(float value) {
+    return std::clamp(value, 0.0F, 1.0F);
+}
+
+struct Curve {
+    std::array<float, 4> samples{1.0F, 1.0F, 1.0F, 1.0F};
+
+    float evaluate(float x) const {
+        const float t = clamp01(x) * static_cast<float>(samples.size() - 1U);
+        const std::size_t index = static_cast<std::size_t>(t);
+        if (index >= samples.size() - 1U) {
+            return samples.back();
+        }
+        const float frac = t - static_cast<float>(index);
+        return samples[index] + (samples[index + 1U] - samples[index]) * frac;
+    }
+};
+
+enum class SurfaceCategory : std::uint8_t {
     Unknown = 0,
     Hard,
     Loose,
@@ -19,43 +40,5 @@ enum class SurfaceCategory {
     Organic,
     Synthetic,
 };
-
-enum class TractionClass {
-    VeryLow = 0,
-    Low,
-    Medium,
-    High,
-    VeryHigh,
-};
-
-struct PhysicalProperties {
-    float friction = 0.6F;
-    float staticFriction = 0.7F;
-    float restitution = 0.1F;
-    float roughness = 0.5F;
-    TractionClass tractionClass = TractionClass::Medium;
-};
-
-struct EnvironmentalProperties {
-    float thermalConductivity = 0.5F;
-    float heatCapacity = 0.5F;
-    float absorbency = 0.5F;
-};
-
-struct DeformationProperties {
-    float softness = 0.1F;
-    float maxCompression = 0.05F;
-    float recoveryRate = 0.9F;
-};
-
-struct MovementProperties {
-    float speedMultiplier = 1.0F;
-    float accelerationMultiplier = 1.0F;
-    float brakingMultiplier = 1.0F;
-    float lateralControlMultiplier = 1.0F;
-};
-
-using SurfaceTags = std::vector<std::string>;
-using SurfaceMetadata = std::unordered_map<std::string, std::string>;
 
 }  // namespace surface

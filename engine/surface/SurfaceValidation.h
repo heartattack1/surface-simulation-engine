@@ -4,13 +4,11 @@
 #include <vector>
 
 #include "SurfaceProfile.h"
+#include "SurfaceState.h"
 
 namespace surface {
 
-enum class SurfaceValidationSeverity {
-    Warning = 0,
-    Error,
-};
+enum class SurfaceValidationSeverity { Warning = 0, Error };
 
 struct SurfaceValidationError {
     SurfaceId id = kInvalidSurfaceId;
@@ -20,5 +18,6 @@ struct SurfaceValidationError {
 };
 
 std::vector<SurfaceValidationError> validateSurfaceProfile(const SurfaceProfile& profile);
+std::vector<SurfaceValidationError> validateSurfaceState(const SurfaceState& state);
 
 }  // namespace surface
