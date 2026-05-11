@@ -1,28 +1,52 @@
 {
   "schemaVersion": 1,
   "id": 1001,
+  "name": "Concrete Dry",
   "category": "Hard",
   "physical": {
-    "friction": 0.72,
-    "staticFriction": 0.82,
-    "restitution": 0.12,
-    "roughness": 0.68
+    "baseStaticFriction": 0.82,
+    "baseDynamicFriction": 0.72,
+    "baseRestitution": 0.12,
+    "baseHardness": 0.95,
+    "baseRoughness": 0.68,
+    "baseGrip": 1.0
   },
   "environmental": {
-    "thermalConductivity": 0.78,
-    "heatCapacity": 0.62,
-    "absorbency": 0.12
+    "wetSlipFactor": 0.15,
+    "saturationSofteningFactor": 0.12,
+    "iceSlipFactor": 0.9,
+    "oilSlipFactor": 0.55,
+    "dustGripPenalty": 0.08
   },
   "deformation": {
-    "softness": 0.05,
-    "maxCompression": 0.02,
-    "recoveryRate": 0.96
+    "deformable": false,
+    "deformationResistance": 0.98,
+    "maxDeformationDepth": 0.01,
+    "deformationPersistence": 0.02,
+    "deformationRecoveryRate": 0.96,
+    "pressureToDeformationScale": 0.08
   },
   "movement": {
-    "speedMultiplier": 1.0,
     "accelerationMultiplier": 1.0,
     "brakingMultiplier": 1.05,
-    "lateralControlMultiplier": 1.02
+    "turnControlMultiplier": 1.02,
+    "jumpTakeoffMultiplier": 1.0,
+    "landingStabilityMultiplier": 1.03
   },
-  "name": "Concrete Dry"
+  "feedback": {
+    "roughnessToCameraJitter": 0.3,
+    "wetnessToAudio": 0.9,
+    "impactToParticles": 0.7,
+    "slideToParticles": 0.6,
+    "impactToHaptics": 0.8
+  },
+  "curves": {
+    "wetnessToFriction": 0.88,
+    "saturationToHardness": 0.94,
+    "iceToFriction": 0.22,
+    "oilToFriction": 0.48,
+    "pressureToDeformation": 0.1,
+    "impactToParticleIntensity": 0.72,
+    "slideSpeedToFeedback": 0.63
+  }
 }

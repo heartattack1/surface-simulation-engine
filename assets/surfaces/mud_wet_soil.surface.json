@@ -1,28 +1,52 @@
 {
   "schemaVersion": 1,
   "id": 1002,
+  "name": "Mud Wet Soil",
   "category": "Organic",
   "physical": {
-    "friction": 0.38,
-    "staticFriction": 0.44,
-    "restitution": 0.03,
-    "roughness": 0.87
+    "baseStaticFriction": 0.44,
+    "baseDynamicFriction": 0.38,
+    "baseRestitution": 0.03,
+    "baseHardness": 0.22,
+    "baseRoughness": 0.87,
+    "baseGrip": 0.62
   },
   "environmental": {
-    "thermalConductivity": 0.43,
-    "heatCapacity": 0.74,
-    "absorbency": 0.95
+    "wetSlipFactor": 0.65,
+    "saturationSofteningFactor": 0.95,
+    "iceSlipFactor": 0.35,
+    "oilSlipFactor": 0.42,
+    "dustGripPenalty": 0.04
   },
   "deformation": {
-    "softness": 0.78,
-    "maxCompression": 0.31,
-    "recoveryRate": 0.52
+    "deformable": true,
+    "deformationResistance": 0.26,
+    "maxDeformationDepth": 0.31,
+    "deformationPersistence": 0.78,
+    "deformationRecoveryRate": 0.52,
+    "pressureToDeformationScale": 0.89
   },
   "movement": {
-    "speedMultiplier": 0.72,
     "accelerationMultiplier": 0.67,
     "brakingMultiplier": 0.79,
-    "lateralControlMultiplier": 0.63
+    "turnControlMultiplier": 0.63,
+    "jumpTakeoffMultiplier": 0.81,
+    "landingStabilityMultiplier": 0.74
   },
-  "name": "Mud Wet Soil"
+  "feedback": {
+    "roughnessToCameraJitter": 0.76,
+    "wetnessToAudio": 1.18,
+    "impactToParticles": 1.24,
+    "slideToParticles": 1.35,
+    "impactToHaptics": 0.92
+  },
+  "curves": {
+    "wetnessToFriction": 0.54,
+    "saturationToHardness": 0.41,
+    "iceToFriction": 0.62,
+    "oilToFriction": 0.58,
+    "pressureToDeformation": 0.86,
+    "impactToParticleIntensity": 1.28,
+    "slideSpeedToFeedback": 1.19
+  }
 }
