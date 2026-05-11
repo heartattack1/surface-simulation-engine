@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <functional>
 
 namespace surface {
 
@@ -42,3 +43,14 @@ enum class SurfaceCategory : std::uint8_t {
 };
 
 }  // namespace surface
+
+namespace std {
+
+template <>
+struct hash<surface::SurfaceId> {
+    std::size_t operator()(const surface::SurfaceId& id) const noexcept {
+        return std::hash<std::uint32_t>{}(id.value);
+    }
+};
+
+}  // namespace std
